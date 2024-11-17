@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@application/*": ["./src/application/*"],
+      "@core/*": ["./src/application/core/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@domain/*": ["./src/domain/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}
