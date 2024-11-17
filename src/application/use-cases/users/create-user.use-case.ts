@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { NewUser, User } from "@/domain/entities/User";
 import type { IUserRepository } from "@/domain/repositories/IUserRepository";
 import { ResultTuple } from "@/domain/utils/result";
-import UserRepository from '@/infrastructure/repositories/user.repository';
+import UserRepository from '@infra/repositories/user.repository';
 import { inject, injectable } from "tsyringe";
 
 @injectable()

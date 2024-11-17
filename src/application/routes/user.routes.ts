@@ -4,7 +4,7 @@ import type { User } from '@/domain/entities/User';
 import { applicationErrorSchema } from '@/domain/validations/applicationError.schema';
 import { userCreateSchema, userSchema, userUpdateSchema } from "@domain/validations/user.schema";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import { container } from '@infrastructure/container';
+import { container } from '@infra/container';
 import CreateUserUseCase from "../use-cases/users/create-user.use-case";
 import DeleteUserUseCase from '../use-cases/users/delete-user.use-case';
 import FindAllUsersUseCase from '../use-cases/users/find-all-users.use-case';

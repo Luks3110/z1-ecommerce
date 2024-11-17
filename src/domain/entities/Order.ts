@@ -1,3 +1,5 @@
+import { orderItems } from "@infra/database/schema/order_items";
+import { orders } from "@infra/database/schema/orders";
 import type { User } from "./User";
 
 export interface Order {
@@ -19,13 +21,10 @@ export interface OrderItem {
     updatedAt: Date;
 }
 
-export type NewOrder = Omit<Order, 'id' | 'createdAt' | 'updatedAt'>;
-export type NewOrderItem = Omit<OrderItem, 'id' | 'createdAt' | 'updatedAt'>;
+export type NewOrder = typeof orders.$inferInsert;
+export type NewOrderItem = typeof orderItems.$inferInsert;
 
 export interface CreateOrderData {
     userId: number;
-    items: Array<{
-        productId: number;
-        quantity: number;
-    }>;
+    items: Array<typeof orderItems.$inferSelect>;
 } 

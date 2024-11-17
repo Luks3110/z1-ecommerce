@@ -2,7 +2,7 @@ import type { NewProduct, Product } from "@/domain/entities/Product";
 import type { IProductRepository } from "@/domain/repositories/IProductRepository";
 import type { ResultTuple } from "@/domain/utils/result";
 import { Result } from "@/domain/utils/result";
-import Neon from "@/infrastructure/database/neon";
+import Neon from "@infra/database/neon";
 import { eq } from "drizzle-orm";
 import { inject, injectable } from "tsyringe";
 import { products } from "../database/schema/products";

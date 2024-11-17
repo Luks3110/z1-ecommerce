@@ -4,7 +4,7 @@ import type { CreateOrderData } from '@/domain/entities/Order';
 import { applicationErrorSchema } from '@/domain/validations/applicationError.schema';
 import { orderCreateSchema, orderSchema } from "@domain/validations/order.schema";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import { container } from '@infrastructure/container';
+import { container } from '@infra/container';
 import CreateOrderUseCase from '../use-cases/orders/create-order.use-case';
 import DeleteOrderUseCase from '../use-cases/orders/delete-order.use-case';
 import FindAllOrdersUseCase from '../use-cases/orders/find-all-orders.use-case';

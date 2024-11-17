@@ -2,7 +2,7 @@ import type { NewUser, User } from "@/domain/entities/User";
 import type { IUserRepository } from "@/domain/repositories/IUserRepository";
 import type { ResultTuple } from "@/domain/utils/result";
 import { Result } from "@/domain/utils/result";
-import Neon from "@/infrastructure/database/neon";
+import Neon from "@infra/database/neon";
 import { eq } from "drizzle-orm";
 import { inject, injectable } from "tsyringe";
 import { users } from "../database/schema/users";

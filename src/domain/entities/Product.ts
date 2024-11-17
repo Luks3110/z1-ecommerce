@@ -1,3 +1,5 @@
+import { products } from "@infra/database/schema/products";
+
 export interface Product {
     id: number;
     name: string;
@@ -9,4 +11,4 @@ export interface Product {
     updatedAt: Date;
 }
 
-export type NewProduct = Omit<Product, 'id' | 'createdAt' | 'updatedAt'>; 
+export type NewProduct = typeof products.$inferInsert;

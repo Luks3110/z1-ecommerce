@@ -1,3 +1,5 @@
+import { users } from "@infra/database/schema/users";
+
 export interface User {
     id: number;
     name: string;
@@ -6,4 +8,4 @@ export interface User {
     updatedAt: Date;
 }
 
-export type NewUser = Omit<User, 'id' | 'createdAt' | 'updatedAt'>; 
+export type NewUser = typeof users.$inferInsert;

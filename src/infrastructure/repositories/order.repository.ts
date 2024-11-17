@@ -2,7 +2,7 @@ import type { CreateOrderData, Order, OrderItem } from "@/domain/entities/Order"
 import type { IOrderRepository } from "@/domain/repositories/IOrderRepository";
 import type { ResultTuple } from "@/domain/utils/result";
 import { Result } from "@/domain/utils/result";
-import Neon from "@/infrastructure/database/neon";
+import Neon from "@infra/database/neon";
 import { eq, inArray, sql } from "drizzle-orm";
 import { inject, injectable } from "tsyringe";
 import { orderItems } from "../database/schema/order_items";

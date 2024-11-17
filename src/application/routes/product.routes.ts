@@ -4,7 +4,7 @@ import type { Product } from '@/domain/entities/Product';
 import { applicationErrorSchema } from '@/domain/validations/applicationError.schema';
 import { productCreateSchema, productSchema, productUpdateSchema } from "@/domain/validations/product.schema";
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
-import { container } from '@infrastructure/container';
+import { container } from '@infra/container';
 import CreateProductUseCase from '../use-cases/products/create-product.use-case';
 import DeleteProductUseCase from '../use-cases/products/delete-product.use-case';
 import FindAllProductsUseCase from '../use-cases/products/find-all-products.use-case';

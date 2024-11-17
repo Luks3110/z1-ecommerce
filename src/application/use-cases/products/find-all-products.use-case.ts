@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import type { Product } from "@/domain/entities/Product";
 import type { IProductRepository } from "@/domain/repositories/IProductRepository";
 import type { ResultTuple } from "@/domain/utils/result";
-import ProductRepository from "@/infrastructure/repositories/product.repository";
+import ProductRepository from "@infra/repositories/product.repository";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

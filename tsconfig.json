@@ -6,9 +6,9 @@
     "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@application/*": ["./src/application/*"],
+      "@app/*": ["./src/application/*"],
       "@core/*": ["./src/application/core/*"],
-      "@infrastructure/*": ["./src/infrastructure/*"],
+      "@infra/*": ["./src/infrastructure/*"],
       "@domain/*": ["./src/domain/*"]
     }
   },
