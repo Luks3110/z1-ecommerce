@@ -29,7 +29,7 @@ import { container } from 'tsyringe'
 import OrderRepository from '../repositories/order.repository'
 import ProductRepository from '../repositories/product.repository'
 import UserRepository from '../repositories/user.repository'
-import 'reflect-metadata'
+
 
 // Database
 container.registerSingleton(Neon.name, Neon)

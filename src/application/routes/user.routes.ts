@@ -16,7 +16,6 @@ import {
   getUserByIdRoute,
   updateUserRoute,
 } from './open-api/users'
-import 'reflect-metadata'
 
 const userRoutes = new OpenAPIHono()
 

@@ -4,7 +4,7 @@ import type { IProductRepository } from '@/domain/repositories/IProductRepositor
 import type { ResultTuple } from '@/domain/utils/result'
 import ProductRepository from '@/infrastructure/repositories/product.repository'
 import { inject, injectable } from 'tsyringe'
-import 'reflect-metadata'
+
 
 @injectable()
 export class FindAllProductsUseCase {

@@ -16,7 +16,6 @@ import {
   getOrderByIdRoute,
   getOrdersByUserIdRoute,
 } from './open-api/orders'
-import 'reflect-metadata'
 
 const orderRoutes = new OpenAPIHono()
 

@@ -5,7 +5,7 @@ import userRoutes from '@app/routes/user.routes'
 import { swaggerUI } from '@hono/swagger-ui'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { showRoutes } from 'hono/dev'
-import 'reflect-metadata'
+
 
 const app = new OpenAPIHono()
 

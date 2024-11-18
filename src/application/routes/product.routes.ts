@@ -16,7 +16,6 @@ import {
   getProductByIdRoute,
   updateProductRoute,
 } from './open-api/products'
-import 'reflect-metadata'
 
 const productRoutes = new OpenAPIHono()
 
