@@ -1,19 +1,19 @@
-import 'reflect-metadata';
+import type { NewUser, User } from '@/domain/entities/User'
 
-import type { NewUser, User } from "@/domain/entities/User";
-import type { IUserRepository } from "@/domain/repositories/IUserRepository";
-import type { ResultTuple } from "@/domain/utils/result";
-import UserRepository from '@/infrastructure/repositories/user.repository';
-import { inject, injectable } from "tsyringe";
+import type { IUserRepository } from '@/domain/repositories/IUserRepository'
+import type { ResultTuple } from '@/domain/utils/result'
+import UserRepository from '@/infrastructure/repositories/user.repository'
+import { inject, injectable } from 'tsyringe'
+import 'reflect-metadata'
 
 @injectable()
 export class CreateUserUseCase {
-    constructor(
-        @inject(UserRepository.name)
-        private userRepository: IUserRepository
-    ) {}
+  constructor(
+    @inject(UserRepository.name)
+    private userRepository: IUserRepository,
+  ) {}
 
-    async execute(user: NewUser): Promise<ResultTuple<User>> {
-        return await this.userRepository.create(user);
-    }
+  async execute(user: NewUser): Promise<ResultTuple<User>> {
+    return await this.userRepository.create(user)
+  }
 }

@@ -1,11 +1,11 @@
-import { users } from "@infra/database/schema/users";
+import type { users } from '@infra/database/schema/users'
 
 export interface User {
-    id: number;
-    name: string;
-    email: string;
-    createdAt: Date;
-    updatedAt: Date;
+  id: number
+  name: string
+  email: string
+  createdAt: Date
+  updatedAt: Date
 }
 
-export type NewUser = typeof users.$inferInsert;
+export type NewUser = typeof users.$inferInsert

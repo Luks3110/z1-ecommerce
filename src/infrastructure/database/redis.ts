@@ -1,34 +1,35 @@
-import { createClient } from 'redis';
-import { injectable } from "tsyringe";
+import { createClient } from 'redis'
+import { injectable } from 'tsyringe'
 
 @injectable()
 export default class Redis {
-    private client: ReturnType<typeof createClient>;
+  private client: ReturnType<typeof createClient>
 
-    constructor() {
-        this.client = createClient({
-            url: process.env.REDIS_URL,
-            socket: {
-                reconnectStrategy: (retries) => {
-                    if (retries > 10) {
-                        return new Error('Redis connection retries exhausted');
-                    }
-                    return Math.min(retries * 100, 3000);
-                }
-            }
-        });
+  constructor() {
+    this.client = createClient({
+      url: process.env.REDIS_URL,
+      socket: {
+        reconnectStrategy: (retries) => {
+          if (retries > 10) {
+            return new Error('Redis connection retries exhausted')
+          }
+          return Math.min(retries * 100, 3000)
+        },
+      },
+    })
 
-        this.client.on('error', (err) => console.error('Redis Client Error', err));
-        this.client.on('connect', () => console.log('Redis Client Connected'));
+    this.client.on('error', err => console.error('Redis Client Error', err))
+    // eslint-disable-next-line no-console
+    this.client.on('connect', () => console.log('Redis Client Connected'))
 
-        this.connect();
-    }
+    this.connect()
+  }
 
-    private async connect() {
-        await this.client.connect();
-    }
+  private async connect() {
+    await this.client.connect()
+  }
 
-    public getClient() {
-        return this.client;
-    }
+  public getClient() {
+    return this.client
+  }
 }

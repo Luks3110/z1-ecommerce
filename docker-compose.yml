@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${PORT:-3000}:3000"
+      - '${PORT:-3000}:3000'
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - PORT=${PORT:-3000}
@@ -24,14 +24,14 @@ services:
   redis:
     image: redis:latest
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - '${REDIS_PORT:-6379}:6379'
     volumes:
       - redis-data:/data
     networks:
       - app-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [CMD, redis-cli, ping]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -42,4 +42,4 @@ networks:
     driver: bridge
 
 volumes:
-  redis-data: 
+  redis-data:

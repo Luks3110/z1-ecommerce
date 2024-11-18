@@ -1,2 +1,2 @@
-export * from './user.schema';
-// Export other schemas as needed 
+export * from './user.schema'
+// Export other schemas as needed

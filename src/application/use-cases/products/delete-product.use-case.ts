@@ -1,20 +1,20 @@
-import 'reflect-metadata';
+import type { IProductRepository } from '@/domain/repositories/IProductRepository'
 
-import type { IProductRepository } from "@/domain/repositories/IProductRepository";
-import type { ResultTuple } from "@/domain/utils/result";
-import ProductRepository from "@/infrastructure/repositories/product.repository";
-import { inject, injectable } from "tsyringe";
+import type { ResultTuple } from '@/domain/utils/result'
+import ProductRepository from '@/infrastructure/repositories/product.repository'
+import { inject, injectable } from 'tsyringe'
+import 'reflect-metadata'
 
 @injectable()
 export class DeleteProductUseCase {
-    constructor(
-        @inject(ProductRepository.name)
-        private productRepository: IProductRepository
-    ) {}
+  constructor(
+    @inject(ProductRepository.name)
+    private productRepository: IProductRepository,
+  ) {}
 
-    async execute(id: number): Promise<ResultTuple<void>> {
-        return await this.productRepository.delete(id);
-    }
+  async execute(id: number): Promise<ResultTuple<void>> {
+    return await this.productRepository.delete(id)
+  }
 }
 
-export default DeleteProductUseCase; 
+export default DeleteProductUseCase

@@ -1,7 +1,8 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import { injectable, singleton } from 'tsyringe';
-import ws from 'ws';
+import process from 'node:process'
+import { neonConfig, Pool } from '@neondatabase/serverless'
+import { drizzle } from 'drizzle-orm/neon-serverless'
+import { injectable, singleton } from 'tsyringe'
+import ws from 'ws'
 
 @injectable()
 @singleton()
@@ -10,8 +11,8 @@ export default class Neon {
 
   constructor() {
     neonConfig.webSocketConstructor = ws
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
-    this.db = drizzle({client: pool, logger: true})
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL! })
+    this.db = drizzle({ client: pool, logger: true })
   }
 
   async query(query: string) {
@@ -21,4 +22,4 @@ export default class Neon {
   drizzle() {
     return this.db
   }
-} 
+}
