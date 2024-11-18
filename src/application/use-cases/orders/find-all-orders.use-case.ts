@@ -17,5 +17,3 @@ export class FindAllOrdersUseCase {
     return await this.orderRepository.findAll()
   }
 }
-
-export default FindAllOrdersUseCase

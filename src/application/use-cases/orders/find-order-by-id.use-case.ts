@@ -19,5 +19,3 @@ export class FindOrderByIdUseCase {
     return await this.orderRepository.findById(id)
   }
 }
-
-export default FindOrderByIdUseCase

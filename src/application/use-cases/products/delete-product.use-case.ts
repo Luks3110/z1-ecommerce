@@ -16,5 +16,3 @@ export class DeleteProductUseCase {
     return await this.productRepository.delete(id)
   }
 }
-
-export default DeleteProductUseCase

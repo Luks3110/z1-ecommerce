@@ -16,5 +16,3 @@ export class DeleteOrderUseCase {
     return await this.orderRepository.delete(id)
   }
 }
-
-export default DeleteOrderUseCase
