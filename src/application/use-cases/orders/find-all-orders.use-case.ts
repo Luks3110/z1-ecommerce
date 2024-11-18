@@ -3,11 +3,11 @@ import 'reflect-metadata';
 import type { Order, OrderItem } from "@/domain/entities/Order";
 import type { IOrderRepository } from "@/domain/repositories/IOrderRepository";
 import type { ResultTuple } from "@/domain/utils/result";
-import OrderRepository from "@infra/repositories/order.repository";
+import OrderRepository from "@/infrastructure/repositories/order.repository";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class FindAllOrdersUseCase {
+export class FindAllOrdersUseCase {
     constructor(
         @inject(OrderRepository.name)
         private orderRepository: IOrderRepository

@@ -2,11 +2,11 @@ import 'reflect-metadata';
 
 import type { IUserRepository } from "@/domain/repositories/IUserRepository";
 import type { ResultTuple } from "@/domain/utils/result";
-import UserRepository from "@infra/repositories/user.repository";
+import UserRepository from "@/infrastructure/repositories/user.repository";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
-class DeleteUserUseCase {
+export class DeleteUserUseCase {
     constructor(
         @inject(UserRepository.name)
         private userRepository: IUserRepository
@@ -16,5 +16,3 @@ class DeleteUserUseCase {
         return await this.userRepository.delete(id);
     }
 }
-
-export default DeleteUserUseCase; 
