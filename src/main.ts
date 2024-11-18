@@ -6,11 +6,10 @@ import { swaggerUI } from '@hono/swagger-ui'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { showRoutes } from 'hono/dev'
 
-
 const app = new OpenAPIHono()
 
-app.get('/health', (c) => {
-  return c.json({
+app.get('/health', (ctx) => {
+  return ctx.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),

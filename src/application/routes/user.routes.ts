@@ -19,67 +19,67 @@ import {
 
 const userRoutes = new OpenAPIHono()
 
-userRoutes.openapi(createUserRoute, async (c) => {
-  const userEntity = c.req.valid('json')
+userRoutes.openapi(createUserRoute, async (ctx) => {
+  const userEntity = ctx.req.valid('json')
   const createUserUseCase = container.resolve(CreateUserUseCase)
   const [user, error] = await createUserUseCase.execute(userEntity)
 
   if (error) {
-    return c.json(error, 422)
+    return ctx.json(error, 422)
   }
 
-  return c.json(user, 201)
+  return ctx.json(user, 201)
 })
 
-userRoutes.openapi(getUserByIdRoute, async (c) => {
-  const { id } = c.req.valid('param')
+userRoutes.openapi(getUserByIdRoute, async (ctx) => {
+  const { id } = ctx.req.valid('param')
   const findUserByIdUseCase = container.resolve(FindUserByIdUseCase)
   const [user, error] = await findUserByIdUseCase.execute(id)
 
   if (error) {
-    return c.json(error, 404)
+    return ctx.json(error, 404)
   }
 
-  return c.json(user, 200)
+  return ctx.json(user, 200)
 })
 
-userRoutes.openapi(getAllUsersRoute, async (c) => {
+userRoutes.openapi(getAllUsersRoute, async (ctx) => {
   const findAllUsersUseCase = container.resolve(FindAllUsersUseCase)
   const [users, error] = await findAllUsersUseCase.execute()
 
   if (error) {
-    return c.json(error, 500)
+    return ctx.json(error, 500)
   }
 
-  return c.json(users, 200)
+  return ctx.json(users, 200)
 })
 
-userRoutes.openapi(updateUserRoute, async (c) => {
-  const { id } = c.req.valid('param')
-  const userData = c.req.valid('json') as Partial<User>
+userRoutes.openapi(updateUserRoute, async (ctx) => {
+  const { id } = ctx.req.valid('param')
+  const userData = ctx.req.valid('json') as Partial<User>
   const updateUserUseCase = container.resolve(UpdateUserUseCase)
   const [user, error] = await updateUserUseCase.execute(id, userData)
 
   if (error) {
     if (error.name === 'NotFoundError') {
-      return c.json(error, 404)
+      return ctx.json(error, 404)
     }
-    return c.json(error, 422)
+    return ctx.json(error, 422)
   }
 
-  return c.json(user, 200)
+  return ctx.json(user, 200)
 })
 
-userRoutes.openapi(deleteUserRoute, async (c) => {
-  const { id } = c.req.valid('param')
+userRoutes.openapi(deleteUserRoute, async (ctx) => {
+  const { id } = ctx.req.valid('param')
   const deleteUserUseCase = container.resolve(DeleteUserUseCase)
   const [, error] = await deleteUserUseCase.execute(id)
 
   if (error) {
-    return c.json(error, 404)
+    return ctx.json(error, 404)
   }
 
-  return c.body(null, 204)
+  return ctx.body(null, 204)
 })
 
 export default userRoutes
