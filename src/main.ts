@@ -9,6 +9,7 @@ import userRoutes from '@app/routes/user.routes'
 import { swaggerUI } from '@hono/swagger-ui'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { showRoutes } from 'hono/dev'
+import cartRoutes from './application/routes/cart.routes'
 
 const app = new OpenAPIHono()
 
@@ -33,6 +34,7 @@ app.get('/ui', swaggerUI({ url: '/docs' }))
 app.route('/users', userRoutes)
 app.route('/products', productRoutes)
 app.route('/orders', orderRoutes)
+app.route('/carts', cartRoutes)
 
 showRoutes(app)
 

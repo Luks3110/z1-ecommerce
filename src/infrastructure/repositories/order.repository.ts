@@ -14,7 +14,7 @@ import { orders } from '../database/schema/orders'
 import { products } from '../database/schema/products'
 
 @injectable()
-export default class OrderRepository implements IOrderRepository {
+export class OrderRepository implements IOrderRepository {
   constructor(
     @inject(Neon.name)
     private neon: Neon,
@@ -133,7 +133,7 @@ export default class OrderRepository implements IOrderRepository {
         .from(orders)
         .where(eq(orders.id, id))
 
-      if (!order) {
+      if (!order || !order.userId) {
         return Result.error({
           name: 'NotFoundError',
           message: `Order with id ${id} not found`,
@@ -147,7 +147,11 @@ export default class OrderRepository implements IOrderRepository {
         .from(orderItems)
         .where(eq(orderItems.orderId, id))
 
-      return Result.ok({ ...order, items: foundOrderItems })
+      return Result.ok({
+        ...order,
+        userId: order.userId,
+        items: foundOrderItems,
+      })
     }
     catch {
       return Result.error({
@@ -160,7 +164,10 @@ export default class OrderRepository implements IOrderRepository {
 
   async findAll(): Promise<ResultTuple<Array<Order & { items: OrderItem[] }>>> {
     try {
-      const allOrders = await this.neon.drizzle().select().from(orders)
+      const allOrders = await this.neon.drizzle()
+        .select()
+        .from(orders)
+        .where(sql`${orders.userId} IS NOT NULL`)
 
       const allOrderItems = await this.neon
         .drizzle()
@@ -186,6 +193,7 @@ export default class OrderRepository implements IOrderRepository {
 
       const ordersWithItems = allOrders.map(order => ({
         ...order,
+        userId: order.userId!,
         items: itemsByOrder[order.id] || [],
       }))
 
@@ -210,6 +218,10 @@ export default class OrderRepository implements IOrderRepository {
         .from(orders)
         .where(eq(orders.userId, userId))
 
+      if (!userOrders.length) {
+        return Result.ok([])
+      }
+
       const foundOrderItems = await this.neon
         .drizzle()
         .select()
@@ -232,10 +244,13 @@ export default class OrderRepository implements IOrderRepository {
         {} as Record<number, OrderItem[]>,
       )
 
-      const ordersWithItems = userOrders.map(order => ({
-        ...order,
-        items: itemsByOrder[order.id] || [],
-      }))
+      const ordersWithItems = userOrders
+        .filter(order => order.userId !== null)
+        .map(order => ({
+          ...order,
+          userId: order.userId as number,
+          items: itemsByOrder[order.id] || [],
+        }))
 
       return Result.ok(ordersWithItems)
     }

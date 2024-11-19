@@ -26,20 +26,12 @@ describe('createOrderUseCase', () => {
         {
           productId: 1,
           quantity: 2,
-          id: 0,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          orderId: 0,
-          priceAtTime: 0,
+          priceAtTime: 1000,
         },
         {
           productId: 2,
           quantity: 1,
-          id: 0,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          orderId: 0,
-          priceAtTime: 0,
+          priceAtTime: 2000,
         },
       ],
     }
@@ -56,7 +48,7 @@ describe('createOrderUseCase', () => {
           orderId: 1,
           productId: 1,
           quantity: 2,
-          priceAtTime: 100,
+          priceAtTime: 1000,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -65,7 +57,7 @@ describe('createOrderUseCase', () => {
           orderId: 1,
           productId: 2,
           quantity: 1,
-          priceAtTime: 100,
+          priceAtTime: 2000,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -81,18 +73,14 @@ describe('createOrderUseCase', () => {
     expect(mockOrderRepository.create).toHaveBeenCalledWith(orderData)
   })
 
-  it('should return error when products are unavailable', async () => {
+  it('should return error when product is out of stock', async () => {
     const orderData: CreateOrderData = {
       userId: 1,
       items: [
         {
           productId: 1,
           quantity: 100,
-          id: 0,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          orderId: 0,
-          priceAtTime: 0,
+          priceAtTime: 1000,
         },
       ],
     }

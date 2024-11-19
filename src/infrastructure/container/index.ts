@@ -1,10 +1,23 @@
 import {
+  AddCartItemUseCase,
+  ClearCartUseCase,
+  CreateCartUseCase,
+  DeleteCartUseCase,
+  FindCartByIdUseCase,
+  FindCartByUserIdUseCase,
+  RemoveCartItemUseCase,
+  UpdateCartItemQuantityUseCase,
+} from '@app/use-cases/carts'
+
+import {
   CreateOrderUseCase,
   DeleteOrderUseCase,
   FindAllOrdersUseCase,
   FindOrderByIdUseCase,
   FindOrdersByUserIdUseCase,
 } from '@app/use-cases/orders'
+
+import { CreateOrderFromCartUseCase } from '@app/use-cases/orders/create-order-from-cart.use-case'
 
 import {
   CreateProductUseCase,
@@ -21,15 +34,15 @@ import {
   FindUserByIdUseCase,
   UpdateUserUseCase,
 } from '@app/use-cases/users'
-
 import Neon from '@infra/database/neon'
-
 import Redis from '@infra/database/redis'
 import { container } from 'tsyringe'
-import OrderRepository from '../repositories/order.repository'
-import ProductRepository from '../repositories/product.repository'
-import UserRepository from '../repositories/user.repository'
-
+import {
+  CartRepository,
+  OrderRepository,
+  ProductRepository,
+  UserRepository,
+} from '../repositories'
 
 // Database
 container.registerSingleton(Neon.name, Neon)
@@ -39,6 +52,7 @@ container.registerSingleton(Redis.name, Redis)
 container.registerSingleton(UserRepository.name, UserRepository)
 container.registerSingleton(ProductRepository.name, ProductRepository)
 container.registerSingleton(OrderRepository.name, OrderRepository)
+container.registerSingleton(CartRepository.name, CartRepository)
 
 // User Use Cases
 container.registerSingleton(CreateUserUseCase.name, CreateUserUseCase)
@@ -69,5 +83,16 @@ container.registerSingleton(
   FindOrdersByUserIdUseCase,
 )
 container.registerSingleton(DeleteOrderUseCase.name, DeleteOrderUseCase)
+container.registerSingleton(CreateOrderFromCartUseCase.name, CreateOrderFromCartUseCase)
+
+// Cart Use Cases
+container.registerSingleton(CreateCartUseCase.name, CreateCartUseCase)
+container.registerSingleton(FindCartByIdUseCase.name, FindCartByIdUseCase)
+container.registerSingleton(FindCartByUserIdUseCase.name, FindCartByUserIdUseCase)
+container.registerSingleton(AddCartItemUseCase.name, AddCartItemUseCase)
+container.registerSingleton(RemoveCartItemUseCase.name, RemoveCartItemUseCase)
+container.registerSingleton(UpdateCartItemQuantityUseCase.name, UpdateCartItemQuantityUseCase)
+container.registerSingleton(ClearCartUseCase.name, ClearCartUseCase)
+container.registerSingleton(DeleteCartUseCase.name, DeleteCartUseCase)
 
 export { container }

@@ -8,7 +8,7 @@ import { inject, injectable } from 'tsyringe'
 import { products } from '../database/schema/products'
 
 @injectable()
-export default class ProductRepository implements IProductRepository {
+export class ProductRepository implements IProductRepository {
   constructor(
     @inject(Neon.name)
     private neon: Neon,

@@ -4,7 +4,7 @@ import type { User } from './User'
 
 export interface Order {
   id: number
-  userId: number | null
+  userId: number
   totalPrice: number
   createdAt: Date
   updatedAt: Date
@@ -24,7 +24,13 @@ export interface OrderItem {
 export type NewOrder = typeof orders.$inferInsert
 export type NewOrderItem = typeof orderItems.$inferInsert
 
+export interface CreateOrderItemData {
+  productId: number
+  quantity: number
+  priceAtTime: number
+}
+
 export interface CreateOrderData {
   userId: number
-  items: Array<typeof orderItems.$inferSelect>
+  items: CreateOrderItemData[]
 }

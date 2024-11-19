@@ -8,7 +8,7 @@ import { inject, injectable } from 'tsyringe'
 import { users } from '../database/schema/users'
 
 @injectable()
-export default class UserRepository implements IUserRepository {
+export class UserRepository implements IUserRepository {
   constructor(
     @inject(Neon.name)
     private neon: Neon,
