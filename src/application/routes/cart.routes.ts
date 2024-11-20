@@ -25,9 +25,9 @@ import {
 const cartRoutes = new OpenAPIHono()
 
 cartRoutes.openapi(createCartRoute, async (ctx) => {
-  const { userId } = ctx.req.valid('json')
+  const { userId, items } = ctx.req.valid('json')
   const createCartUseCase = container.resolve(CreateCartUseCase)
-  const [cart, error] = await createCartUseCase.execute(userId)
+  const [cart, error] = await createCartUseCase.execute({ userId, items })
 
   if (error) {
     return ctx.json(error, 422)

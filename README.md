@@ -1,56 +1,46 @@
 # Z1 E-commerce API
 
-A modern e-commerce API built with Bun, Hono, TypeScript, and Clean Architecture principles. Features include user management, product catalog, and order processing with proper inventory control.
-
-## 🏗️ Architecture
-
-This project follows Clean Architecture principles with a clear separation of concerns:
-
-```
-src/
-├── application/        # Application business rules
-│   ├── routes/        # API routes and controllers
-│   └── use-cases/     # Use cases implementation
-│       ├── orders/
-│       ├── products/
-│       └── users/
-├── domain/            # Enterprise business rules
-│   ├── entities/      # Business entities
-│   ├── repositories/  # Repository interfaces
-│   ├── utils/        # Shared utilities
-│   └── validations/  # Schema validations
-└── infrastructure/    # Frameworks and drivers
-    ├── container/     # Dependency injection setup
-    ├── database/      # Database configurations
-    │   └── schema/    # Database schemas
-    └── repositories/  # Repository implementations
-```
+A modern e-commerce API built with Bun, Hono, TypeScript, and Clean Architecture principles.
 
 ## 🚀 Features
 
-- **Clean Architecture**: Clear separation of concerns and dependencies pointing inward
-- **Type Safety**: Full TypeScript support with proper type definitions
-- **API Documentation**: OpenAPI/Swagger documentation
-- **Database**: PostgreSQL with Drizzle ORM
-- **Caching**: Redis integration
-- **Dependency Injection**: Using TSyringe
-- **Error Handling**: Consistent error handling with Result type
-- **Validation**: Request validation with Zod
-- **Docker Support**: Containerization with multi-stage builds
-
-## 🛠️ Technologies
-
-- Bun
+- Clean Architecture
 - TypeScript
-- Hono
-- Drizzle ORM
-- PostgreSQL
-- Redis
-- TSyringe
-- Zod
-- Docker
+- OpenAPI/Swagger documentation
+- PostgreSQL with Drizzle ORM
+- Redis for caching
+- Docker support
+- Dependency Injection
+- Error handling with Result type
+- Request validation with Zod
 
 ## 🏃‍♂️ Running the Project
+
+### Prerequisites
+
+- Docker and Docker Compose
+- Bun (for local development)
+
+### Using Docker (Recommended)
+
+1. Copy environment variables:
+```bash
+cp .env.example .env
+```
+
+2. Start all services:
+```bash
+docker compose up -d
+```
+
+3. Run database migrations:
+```bash
+docker compose exec api bun run db:migrate
+```
+
+4. Access the API:
+- API: http://localhost:3000
+- Documentation: http://localhost:3000/ui
 
 ### Local Development
 
@@ -59,52 +49,48 @@ src/
 bun install
 ```
 
-2. Set up environment variables:
+2. Start PostgreSQL and Redis:
 ```bash
-cp .env.example .env
-# Edit .env with your configurations
+docker compose up postgres redis -d
 ```
 
-3. Start Redis (required):
+3. Run database migrations:
 ```bash
-docker compose up redis -d
+bun run db:migrate
 ```
 
-4. Run the development server:
+4. Start the development server:
 ```bash
 bun run dev
 ```
 
-5. Access the API:
-- API: http://localhost:3000
-- Documentation: http://localhost:3000/ui
+## 📚 Database Migrations
 
-### Using Docker
-
-1. Build and start all services:
+Generate migrations:
 ```bash
-docker compose up -d
+bun run db:generate
 ```
 
-2. Stop all services:
+Apply migrations:
 ```bash
-docker compose down
+bun run db:migrate
 ```
 
-## 📚 API Documentation
-
-The API documentation is available at `/ui` when the server is running. It includes:
-
-- All available endpoints
-- Request/response schemas
-- Example requests
+Push migrations to the database:
+```bash
+bun run db:push
+```
 
 ## 🧪 Testing
 
-Run the test suite:
+Run tests:
 ```bash
 bun test
 ```
+
+## Postman Collection
+
+Access the /docs endpoint, copy the Open Api schema and import it into Postman or any other API client.
 
 ## 📝 License
 

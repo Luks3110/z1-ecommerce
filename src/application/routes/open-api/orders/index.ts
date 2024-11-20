@@ -149,7 +149,46 @@ const deleteOrderRoute = createRoute({
   },
 })
 
+const createOrderFromCartRoute = createRoute({
+  method: 'post',
+  path: '/cart/{cartId}',
+  tags: ['Orders'],
+  summary: 'Create order from cart',
+  request: {
+    params: z.object({
+      cartId: z.string(),
+    }),
+  },
+  responses: {
+    201: {
+      content: {
+        'application/json': {
+          schema: orderSchema,
+        },
+      },
+      description: 'Order created successfully',
+    },
+    404: {
+      content: {
+        'application/json': {
+          schema: applicationErrorSchema,
+        },
+      },
+      description: 'Cart not found',
+    },
+    422: {
+      content: {
+        'application/json': {
+          schema: applicationErrorSchema,
+        },
+      },
+      description: 'Validation error',
+    },
+  },
+})
+
 export {
+  createOrderFromCartRoute,
   createOrderRoute,
   deleteOrderRoute,
   getAllOrdersRoute,

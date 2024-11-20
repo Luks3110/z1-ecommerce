@@ -6,7 +6,10 @@
     "lint:fix": "eslint --fix .",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
     "@hono/swagger-ui": "^0.4.1",
@@ -18,6 +21,7 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.36.3",
     "hono": "^4.6.10",
+    "pg": "^8.13.1",
     "redis": "^4.7.0",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.8.0",

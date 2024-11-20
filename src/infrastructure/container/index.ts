@@ -1,3 +1,5 @@
+import Database from '@/infrastructure/database/db'
+
 import {
   AddCartItemUseCase,
   ClearCartUseCase,
@@ -26,7 +28,6 @@ import {
   FindProductByIdUseCase,
   UpdateProductUseCase,
 } from '@app/use-cases/products'
-
 import {
   CreateUserUseCase,
   DeleteUserUseCase,
@@ -34,7 +35,6 @@ import {
   FindUserByIdUseCase,
   UpdateUserUseCase,
 } from '@app/use-cases/users'
-import Neon from '@infra/database/neon'
 import Redis from '@infra/database/redis'
 import { container } from 'tsyringe'
 import {
@@ -45,7 +45,7 @@ import {
 } from '../repositories'
 
 // Database
-container.registerSingleton(Neon.name, Neon)
+container.registerSingleton(Database.name, Database)
 container.registerSingleton(Redis.name, Redis)
 
 // Repositories

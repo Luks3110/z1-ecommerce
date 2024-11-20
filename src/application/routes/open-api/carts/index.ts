@@ -1,5 +1,5 @@
 import { applicationErrorSchema } from '@/domain/validations/applicationError.schema'
-import { addItemSchema, cartResponseSchema, updateQuantitySchema } from '@/domain/validations/cart.schema'
+import { addItemSchema, cartCreateSchema, cartResponseSchema, updateQuantitySchema } from '@/domain/validations/cart.schema'
 import { createRoute, z } from '@hono/zod-openapi'
 
 const createCartRoute = createRoute({
@@ -11,9 +11,7 @@ const createCartRoute = createRoute({
     body: {
       content: {
         'application/json': {
-          schema: z.object({
-            userId: z.number(),
-          }),
+          schema: cartCreateSchema,
         },
       },
     },

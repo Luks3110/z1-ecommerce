@@ -16,8 +16,6 @@ export interface Cart {
   expiresAt: Date
 }
 
-export type NewCart = Omit<Cart, 'createdAt' | 'updatedAt' | 'expiresAt'>
-
 export function serializeCart(cart: Cart): string | null {
   return safeStringify({
     ...cart,

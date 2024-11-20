@@ -6,7 +6,7 @@ import type {
 import type { IOrderRepository } from '@/domain/repositories/IOrderRepository'
 import type { ResultTuple } from '@/domain/utils/result'
 import { Result } from '@/domain/utils/result'
-import Neon from '@infra/database/neon'
+import Database from '@/infrastructure/database/db'
 import { eq, inArray, sql } from 'drizzle-orm'
 import { inject, injectable } from 'tsyringe'
 import { orderItems } from '../database/schema/order_items'
@@ -16,14 +16,14 @@ import { products } from '../database/schema/products'
 @injectable()
 export class OrderRepository implements IOrderRepository {
   constructor(
-    @inject(Neon.name)
-    private neon: Neon,
+    @inject(Database.name)
+    private db: Database,
   ) {}
 
   async create(
     orderData: CreateOrderData,
   ): Promise<ResultTuple<Order & { items: OrderItem[] }>> {
-    const db = this.neon.drizzle()
+    const db = this.db.drizzle()
 
     try {
       return await db.transaction(
@@ -87,11 +87,11 @@ export class OrderRepository implements IOrderRepository {
                         AND EXISTS (SELECT 1 FROM new_order)
                     )
                     SELECT 
-                        o.*,
-                        COALESCE(json_agg(noi.*) FILTER (WHERE noi.id IS NOT NULL), '[]') as items
-                    FROM new_order no
-                    LEFT JOIN new_order_items noi ON true
-                    GROUP BY no.id, no.user_id, no.total_price, no.created_at, no.updated_at;
+                        new_order.*,
+                        COALESCE(json_agg(new_order_items.*) FILTER (WHERE new_order_items.id IS NOT NULL), '[]') as items
+                    FROM new_order
+                    LEFT JOIN new_order_items ON new_order_items.order_id = new_order.id
+                    GROUP BY new_order.id, new_order.user_id, new_order.total_price, new_order.created_at, new_order.updated_at;
                 `)
 
           if (!result.rows[0]) {
@@ -127,7 +127,7 @@ export class OrderRepository implements IOrderRepository {
     id: number,
   ): Promise<ResultTuple<Order & { items: OrderItem[] }>> {
     try {
-      const [order] = await this.neon
+      const [order] = await this.db
         .drizzle()
         .select()
         .from(orders)
@@ -141,7 +141,7 @@ export class OrderRepository implements IOrderRepository {
         })
       }
 
-      const foundOrderItems = await this.neon
+      const foundOrderItems = await this.db
         .drizzle()
         .select()
         .from(orderItems)
@@ -164,12 +164,12 @@ export class OrderRepository implements IOrderRepository {
 
   async findAll(): Promise<ResultTuple<Array<Order & { items: OrderItem[] }>>> {
     try {
-      const allOrders = await this.neon.drizzle()
+      const allOrders = await this.db.drizzle()
         .select()
         .from(orders)
         .where(sql`${orders.userId} IS NOT NULL`)
 
-      const allOrderItems = await this.neon
+      const allOrderItems = await this.db
         .drizzle()
         .select()
         .from(orderItems)
@@ -212,7 +212,7 @@ export class OrderRepository implements IOrderRepository {
     userId: number,
   ): Promise<ResultTuple<Array<Order & { items: OrderItem[] }>>> {
     try {
-      const userOrders = await this.neon
+      const userOrders = await this.db
         .drizzle()
         .select()
         .from(orders)
@@ -222,7 +222,7 @@ export class OrderRepository implements IOrderRepository {
         return Result.ok([])
       }
 
-      const foundOrderItems = await this.neon
+      const foundOrderItems = await this.db
         .drizzle()
         .select()
         .from(orderItems)
@@ -264,7 +264,7 @@ export class OrderRepository implements IOrderRepository {
   }
 
   async delete(id: number): Promise<ResultTuple<void>> {
-    const db = this.neon.drizzle()
+    const db = this.db.drizzle()
 
     try {
       return await db.transaction(async (tx) => {

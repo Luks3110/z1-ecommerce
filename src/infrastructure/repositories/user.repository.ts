@@ -2,7 +2,7 @@ import type { NewUser, User } from '@/domain/entities/User'
 import type { IUserRepository } from '@/domain/repositories/IUserRepository'
 import type { ResultTuple } from '@/domain/utils/result'
 import { Result } from '@/domain/utils/result'
-import Neon from '@infra/database/neon'
+import Database from '@/infrastructure/database/db'
 import { eq } from 'drizzle-orm'
 import { inject, injectable } from 'tsyringe'
 import { users } from '../database/schema/users'
@@ -10,13 +10,13 @@ import { users } from '../database/schema/users'
 @injectable()
 export class UserRepository implements IUserRepository {
   constructor(
-    @inject(Neon.name)
-    private neon: Neon,
+    @inject(Database.name)
+    private db: Database,
   ) {}
 
   async create(user: NewUser): Promise<ResultTuple<User>> {
     try {
-      const newUser = await this.neon
+      const newUser = await this.db
         .drizzle()
         .insert(users)
         .values(user)
@@ -44,7 +44,7 @@ export class UserRepository implements IUserRepository {
 
   async findById(id: number): Promise<ResultTuple<User>> {
     try {
-      const result = await this.neon
+      const result = await this.db
         .drizzle()
         .select()
         .from(users)
@@ -71,7 +71,7 @@ export class UserRepository implements IUserRepository {
 
   async findAll(): Promise<ResultTuple<User[]>> {
     try {
-      const result = await this.neon.drizzle().select().from(users)
+      const result = await this.db.drizzle().select().from(users)
       return Result.ok(result)
     }
     catch {
@@ -85,7 +85,7 @@ export class UserRepository implements IUserRepository {
 
   async update(id: number, user: Partial<User>): Promise<ResultTuple<User>> {
     try {
-      const updatedUser = await this.neon
+      const updatedUser = await this.db
         .drizzle()
         .update(users)
         .set({
@@ -126,7 +126,7 @@ export class UserRepository implements IUserRepository {
 
   async delete(id: number): Promise<ResultTuple<void>> {
     try {
-      const result = await this.neon
+      const result = await this.db
         .drizzle()
         .delete(users)
         .where(eq(users.id, id))

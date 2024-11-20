@@ -3,6 +3,7 @@ import type { CreateOrderData } from '@/domain/entities/Order'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { container } from '@infra/container'
 import {
+  CreateOrderFromCartUseCase,
   CreateOrderUseCase,
   DeleteOrderUseCase,
   FindAllOrdersUseCase,
@@ -10,6 +11,7 @@ import {
   FindOrdersByUserIdUseCase,
 } from '../use-cases/orders'
 import {
+  createOrderFromCartRoute,
   createOrderRoute,
   deleteOrderRoute,
   getAllOrdersRoute,
@@ -76,6 +78,21 @@ orderRoutes.openapi(deleteOrderRoute, async (ctx) => {
   }
 
   return ctx.body(null, 204)
+})
+
+orderRoutes.openapi(createOrderFromCartRoute, async (ctx) => {
+  const { cartId } = ctx.req.valid('param')
+  const createOrderFromCartUseCase = container.resolve(CreateOrderFromCartUseCase)
+  const [order, error] = await createOrderFromCartUseCase.execute(cartId)
+
+  if (error) {
+    if (error.name === 'NotFoundError') {
+      return ctx.json(error, 404)
+    }
+    return ctx.json(error, 422)
+  }
+
+  return ctx.json(order, 201)
 })
 
 export default orderRoutes

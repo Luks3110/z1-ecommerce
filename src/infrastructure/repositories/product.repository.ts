@@ -2,7 +2,7 @@ import type { NewProduct, Product } from '@/domain/entities/Product'
 import type { IProductRepository } from '@/domain/repositories/IProductRepository'
 import type { ResultTuple } from '@/domain/utils/result'
 import { Result } from '@/domain/utils/result'
-import Neon from '@infra/database/neon'
+import Database from '@/infrastructure/database/db'
 import { eq } from 'drizzle-orm'
 import { inject, injectable } from 'tsyringe'
 import { products } from '../database/schema/products'
@@ -10,13 +10,13 @@ import { products } from '../database/schema/products'
 @injectable()
 export class ProductRepository implements IProductRepository {
   constructor(
-    @inject(Neon.name)
-    private neon: Neon,
+    @inject(Database.name)
+    private db: Database,
   ) {}
 
   async create(product: NewProduct): Promise<ResultTuple<Product>> {
     try {
-      const newProduct = await this.neon
+      const newProduct = await this.db
         .drizzle()
         .insert(products)
         .values(product)
@@ -34,7 +34,7 @@ export class ProductRepository implements IProductRepository {
 
   async findById(id: number): Promise<ResultTuple<Product>> {
     try {
-      const result = await this.neon
+      const result = await this.db
         .drizzle()
         .select()
         .from(products)
@@ -61,7 +61,7 @@ export class ProductRepository implements IProductRepository {
 
   async findAll(): Promise<ResultTuple<Product[]>> {
     try {
-      const result = await this.neon.drizzle().select().from(products)
+      const result = await this.db.drizzle().select().from(products)
       return Result.ok(result)
     }
     catch {
@@ -78,7 +78,7 @@ export class ProductRepository implements IProductRepository {
     product: Partial<Product>,
   ): Promise<ResultTuple<Product>> {
     try {
-      const updatedProduct = await this.neon
+      const updatedProduct = await this.db
         .drizzle()
         .update(products)
         .set({
@@ -109,7 +109,7 @@ export class ProductRepository implements IProductRepository {
 
   async delete(id: number): Promise<ResultTuple<void>> {
     try {
-      const result = await this.neon
+      const result = await this.db
         .drizzle()
         .delete(products)
         .where(eq(products.id, id))
@@ -136,7 +136,7 @@ export class ProductRepository implements IProductRepository {
 
   async findByName(name: string): Promise<ResultTuple<Product[]>> {
     try {
-      const result = await this.neon
+      const result = await this.db
         .drizzle()
         .select()
         .from(products)
@@ -154,7 +154,7 @@ export class ProductRepository implements IProductRepository {
 
   async findInStock(): Promise<ResultTuple<Product[]>> {
     try {
-      const result = await this.neon
+      const result = await this.db
         .drizzle()
         .select()
         .from(products)

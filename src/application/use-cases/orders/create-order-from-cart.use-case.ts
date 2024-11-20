@@ -1,5 +1,4 @@
-import type { CreateOrderData, Order, OrderItem } from '@/domain/entities/Order'
-
+import type { Order, OrderItem } from '@/domain/entities/Order'
 import type { ICartRepository } from '@/domain/repositories/ICartRepository'
 import type { IOrderRepository } from '@/domain/repositories/IOrderRepository'
 import type { ResultTuple } from '@/domain/utils/result'
@@ -7,7 +6,6 @@ import { Result } from '@/domain/utils/result'
 import { CartRepository } from '@/infrastructure/repositories/cart.repository'
 import { OrderRepository } from '@/infrastructure/repositories/order.repository'
 import { inject, injectable } from 'tsyringe'
-import 'reflect-metadata'
 
 @injectable()
 export class CreateOrderFromCartUseCase {
@@ -37,7 +35,7 @@ export class CreateOrderFromCartUseCase {
       })
     }
 
-    const orderData: CreateOrderData = {
+    const orderData = {
       userId: cart.userId,
       items: Array.from(cart.items.values()).map(item => ({
         productId: item.productId,

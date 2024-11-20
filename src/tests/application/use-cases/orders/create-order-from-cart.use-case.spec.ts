@@ -1,5 +1,5 @@
 import type { Cart, CartItem } from '@/domain/entities/Cart'
-import type { CreateOrderData, Order, OrderItem } from '@/domain/entities/Order'
+import type { Order, OrderItem } from '@/domain/entities/Order'
 import type { ICartRepository } from '@/domain/repositories/ICartRepository'
 import type { IOrderRepository } from '@/domain/repositories/IOrderRepository'
 import { CreateOrderFromCartUseCase } from '@/application/use-cases/orders/create-order-from-cart.use-case'
@@ -52,15 +52,6 @@ describe('createOrderFromCartUseCase', () => {
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     }
 
-    const orderData: CreateOrderData = {
-      userId,
-      items: [{
-        productId: cartItem.productId,
-        quantity: cartItem.quantity,
-        priceAtTime: cartItem.price,
-      }],
-    }
-
     const order: Order & { items: OrderItem[] } = {
       id: 1,
       userId,
@@ -87,7 +78,14 @@ describe('createOrderFromCartUseCase', () => {
     expect(error).toBeNull()
     expect(result).toEqual(order)
     expect(mockCartRepository.findById).toHaveBeenCalledWith(cartId)
-    expect(mockOrderRepository.create).toHaveBeenCalledWith(orderData)
+    expect(mockOrderRepository.create).toHaveBeenCalledWith({
+      userId,
+      items: [{
+        productId: cartItem.productId,
+        quantity: cartItem.quantity,
+        priceAtTime: cartItem.price,
+      }],
+    })
     expect(mockCartRepository.delete).toHaveBeenCalledWith(cartId)
   })
 

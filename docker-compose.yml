@@ -1,45 +1,52 @@
 version: '3.8'
 
 services:
-  server:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  postgres:
+    image: postgres:16-alpine
     ports:
-      - '${PORT:-3000}:3000'
+      - "5432:5432"
     environment:
-      - NODE_ENV=${NODE_ENV:-production}
-      - PORT=${PORT:-3000}
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_URL=redis://redis:6379
-    depends_on:
-      redis:
-        condition: service_healthy
-    networks:
-      - app-network
-    restart: unless-stopped
-
-  redis:
-    image: redis:latest
-    ports:
-      - '${REDIS_PORT:-6379}:6379'
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - redis-data:/data
-    networks:
-      - app-network
-    restart: unless-stopped
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [CMD, redis-cli, ping]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
-    command: redis-server --appendonly yes
 
-networks:
-  app-network:
-    driver: bridge
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379
+      PORT: ${PORT}
+      NODE_ENV: ${NODE_ENV}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
 volumes:
-  redis-data:
+  postgres_data:
+  redis_data:
